@@ -9,7 +9,6 @@ function start(handle, route){
     var pathname = url.parse(request.url).pathname;   //pathname => 포트번호이후 QueryString이전 문자열
     var queryString = url.parse(request.url, true).query;   //url.parse(request.url, bool),, true->객체형식, false->문자열형식
     var filename = queryString.id;
-    console.log(filename);
     route(handle, pathname, response, filename);
   }
 
