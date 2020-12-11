@@ -1,11 +1,8 @@
-function route(handle, pathname, response, filename){
-    //console.log("pathname : " + pathname);
-    
-    if(typeof handle[pathname] === 'function'){
-        handle[pathname](response, filename);
-    }else{
-        handle['errorPage'](response, pathname, filename);
-    }
+function route(handle, response, path, filename){
+    if(typeof handle[path] === 'function')
+        handle[path](response, filename);
+    else
+        handle['errorPage'](response, filename, path);
 }
 
 exports.route = route;

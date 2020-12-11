@@ -6,10 +6,10 @@ function start(handle, route){
   //서버 구동시 실행할 내용을 작성
   function onRequest(request, response){
     console.log("input Server localhost:3000");   //서버 호출시 실행
-    var pathname = url.parse(request.url).pathname;   //pathname => 포트번호이후 QueryString이전 문자열
+    var path = url.parse(request.url).pathname;   //pathname => 포트번호이후 QueryString이전 문자열
     var queryString = url.parse(request.url, true).query;   //url.parse(request.url, bool),, true->객체형식, false->문자열형식
     var filename = queryString.id;
-    route(handle, pathname, response, filename);
+    route(handle, response, path, filename);
   }
 
   var server = http.createServer(onRequest);    //서버생성.. 실행방식을 매개변수로 전달
