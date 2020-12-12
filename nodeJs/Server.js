@@ -9,7 +9,7 @@ function start(handle, route){
     var path = url.parse(request.url).pathname;   //pathname => 포트번호이후 QueryString이전 문자열
     var queryString = url.parse(request.url, true).query;   //url.parse(request.url, bool),, true->객체형식, false->문자열형식
     var filename = queryString.id;
-    route(handle, response, path, filename);
+    route(handle, request,response, path, filename);
   }
 
   var server = http.createServer(onRequest);    //서버생성.. 실행방식을 매개변수로 전달
