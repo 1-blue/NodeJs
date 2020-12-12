@@ -9,6 +9,7 @@ index -> route()호출
 index -> server()호출
 server(route())전달.. 출력용 함수포인터(route)를 전송함
 */
+
 /*
 동기 : 작업시행중에 다른작업 실행하지않음
 비동기 : 작업실행중에도 다른작업 실행함(Async)
