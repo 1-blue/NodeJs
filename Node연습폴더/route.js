@@ -1,17 +1,12 @@
-//출력방법구분
-
-function route(handle, res, pathname){
-    console.log("pathname : " + pathname);
-    if(pathname === '/'){
-        pathname = '/DEFAULT';
-    }
-    if(typeof handle[pathname] === "function"){
-        console.log("pathname : " + pathname);
-        handle[pathname](res, pathname);
+//요청식별
+function route(handle, pathname, rp){
+    if(typeof handle[pathname] === 'function'){
+        handle[pathname](rp);
     }else{
-        handle['error'](res);
+        rp.writeHead(200);
+        rp.write("404");
+        rp.end();
     }
-
 }
 
-exports.route = route;
+module.exports.route = route;
