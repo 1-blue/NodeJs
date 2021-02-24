@@ -1,0 +1,14 @@
+{
+  "name": "5chapter",
+  "version": "0.0.1",
+  "description": "start",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "start"
+  ],
+  "author": "1-blue",
+  "license": "ISC"
+}

@@ -1,0 +1,28 @@
+//기본 루트로 들어감.. 환경변수등록하거나 bin폴더에서 실행해야함
+mysql -u root -p
+password : 비밀번호입력
+
+//데이터베이스하나 생성
+create schma 'nodejs' default character set utf8;
+
+//데이터베이스사용명령
+use 데이터베이스명
+
+//테이블생성
+*********자료형***********
+INT : 정수자료형 (FLOAT, DOUBLE도 존재)
+VARCHAR : 문자열 자료형, 가변길이 (CHAR는 고정길이)
+TEXT :  긴 문자열
+DATETIME : 날짜 + 시간 자료형
+TINYINT : -128~127표현가능 (bool값 표현하는데 주로사용)
+*********옵션***********
+NOT NULL : 빈값은 받지않는다 즉, 필수입력
+AUTO_INCREAMENT : 숫자 자료형인경우 다음로우가 저장될때 자동으로 1증가
+UNSIGNED : 0과 양수만 허용
+ZOREFILL : 숫자의 자리 수가 고정된 경우 빈자리에 0넣음
+DEFAULT now() : 날짜의 컬럼의 기본값을 현재시간으로
+
+PRIMARY KEY(값) : 중복될수없게만듦
+
+
+
