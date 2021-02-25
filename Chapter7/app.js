@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const nunjucks = require('nunjucks');
+require('dotenv').config();
 
 // index.js불러올거라 생략가능... index.js의 db안에서 sequelize값을 가져옴
 const { sequelize } = require('./models');
