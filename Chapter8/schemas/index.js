@@ -14,7 +14,7 @@ const connect = ()=>{
     }, (error) =>{
         if(error){
             console.error('몽고디비연결에러', error);
-        } else {
+        } else { 
             console.log('몽고디비 연결 성공');
         }
     });

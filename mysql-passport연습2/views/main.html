@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    {% if isLogin %}
+    <a href="/auth">회원가입</a>
+    <a href="/login">로그인</a>
+    <h1>Hello Guest</h1>
+    {% else %}
+    <a href="/logout">로그아웃</a>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+
+        <!-- <input id="img" type="file" accept="image/*"> -->
+        <label for="img">사진 업로드</label>
+        <input type="file" accept="image/*" name="image" />
+        <button type="submit">업로드</button>
+    </form>
+
+    <form action="/upload/array" method="post" enctype="multipart/form-data">
+        <input type="file" name="image_array" multiple/>
+        <button type="submit">업로드</button>
+    </form>
+
+    <form action="/upload/images" method="post" enctype="multipart/form-data">
+        <input type="file" name="image1" />
+        <input type="file" name="image2" />
+        <button type="submit">업로드</button>
+    </form>
+    <h1>Hello {{ name }}</h1>
+    {% endif %}
+
+</body>
+
+</html>

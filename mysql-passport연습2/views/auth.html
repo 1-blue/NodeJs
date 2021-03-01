@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <form action="/auth" method="post">
+        <div>
+            <span>nickname : </span>
+            <input type="text" name="name" />
+        </div>
+
+        <div>
+            <span>email : </span>
+            <input type="email" name="email" />
+        </div>
+
+        <div>
+            <span>password : </span>
+            <input type="password" name="password" />
+        </div>
+
+        <button type="submit">가입</button>
+    </form>
+</body>
+</html>
