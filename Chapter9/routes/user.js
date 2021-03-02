@@ -25,4 +25,19 @@ router.post('/:id/follow', isLoggedIn, async (req, res, next) => {
     }
 });
 
+router.post('/:id/unfollow', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({ where: { id: req.user.id } });    //현재유저를찾고
+        if (user) {
+            await user.removeFollowing(parseInt(req.params.id, 10));       //현재유저가 following한사람을 삭제
+            res.send('success');
+        } else {
+            res.status(404).send('no user');
+        }
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 module.exports = router;

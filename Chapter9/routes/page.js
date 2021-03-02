@@ -45,7 +45,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // 해쉬태그검색
-router.get('/hashtag', async (req, res, next) => {
+router.get('/hashtag', isLoggedIn, async (req, res, next) => {
     const query = req.query.hashtag;
     if (!query) {
         return res.redirect('/');
@@ -64,7 +64,7 @@ router.get('/hashtag', async (req, res, next) => {
             title: `${query} | NodeBird`,
             twits: posts,
         });
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         return next(error);
     }

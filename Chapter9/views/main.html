@@ -30,8 +30,10 @@
             <input type="hidden" value="{{twit.User.id}}" class="twit-user-id">
             <input type="hidden" value="{{twit.id}}" class="twit-id">
             <div class="twit-author">{{twit.User.nick}}</div>
-            {% if not followerIdList.includes(twit.User.id) and twit.User.id !== user.id %}
+            {% if not followerIdList.includes(twit.User.id) and twit.User.id !== user.id and user.id %}
               <button class="twit-follow">팔로우하기</button>
+            {% elseif twit.User.id !== user.id and user.id %}
+              <button class="twit-unfollow">언팔로우하기</button>
             {% endif %}
             <div class="twit-content">{{twit.content}}</div>
             {% if twit.img %}
@@ -45,6 +47,7 @@
 
 {% block script %}
   <script>
+    //이미지 먼저 업로드하기 (댓글과 이미지 한번에 올리면 시간걸리수있으므로 이미지 올린즉시 업로드)
     if (document.getElementById('img')) {
       document.getElementById('img').addEventListener('change', function(e) {
         const formData = new FormData();
@@ -60,6 +63,8 @@
           });
       });
     }
+
+    //follow신청했을때 서버로 user.id넣어서 신호보내기
     document.querySelectorAll('.twit-follow').forEach(function(tag) {
       tag.addEventListener('click', function() {
         const myId = document.querySelector('#my-id');
@@ -68,6 +73,27 @@
           if (userId !== myId.value) {
             if (confirm('팔로잉하시겠습니까?')) {
               axios.post(`/user/${userId}/follow`)
+                .then(() => {
+                  location.reload();    // 페이지 새로고침
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
+            }
+          }
+        }
+      });
+    });
+
+    ///unfollow신청했을때 서버로 user.id넣어서 신호보내기
+    document.querySelectorAll('.twit-unfollow').forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        const myId = document.querySelector('#my-id');
+        if (myId) {
+          const userId = tag.parentNode.querySelector('.twit-user-id').value;
+          if (userId !== myId.value) {
+            if (confirm('언팔로잉하시겠습니까?')) {
+              axios.post(`/user/${userId}/unfollow`)
                 .then(() => {
                   location.reload();
                 })
