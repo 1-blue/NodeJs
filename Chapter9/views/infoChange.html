@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="timeline">
+    <form id="change-form" action="/auth/update" method="post">
+      <div class="input-group">
+        <label for="change-nick">닉네임</label>
+        <input id="change-nick" type="text" name="nick" >
+    </div>
+
+      <button id="change-btn" type="submit" class="btn">변경하기</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+    window.onload = () => {
+        const checkOverlap = new URL(location.href).searchParams.get('error');
+      if (checkOverlap === "email_exist") {
+        alert('이미 존재하는 이메일입니다.');
+      }
+      if (checkOverlap === "nick_exist") {
+        alert('이미 존재하는 닉네임입니다.');
+      }
+    };
+  </script>
+{% endblock %}

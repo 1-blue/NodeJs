@@ -1,3 +1,5 @@
+const User = require('../models/user');
+
 exports.isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {        // 로그인중일때 true반환
         next();

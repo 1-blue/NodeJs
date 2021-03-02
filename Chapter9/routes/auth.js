@@ -10,10 +10,18 @@ const router = express.Router();
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
     const { email, nick, password } = req.body;     //front에서 전달한 정보 사용
     try {
-        const exUser = await User.findOne({ where: { email } });
-        if (exUser) {
-            return res.redirect('/join?error=exist');       //입력된 email이 존재하면 원래페이지로... 이메일 중복이므로 회원가입불가능
+        // 이메일 중복 확인
+        const exUserEmail = await User.findOne({ where: { email } });
+        if (exUserEmail) {
+            return res.redirect('/join?error=email_exist');       //입력된 email이 존재하면 원래페이지로... 이메일 중복이므로 회원가입불가능
         }
+
+        // 닉네임 중복 확인
+        const exUserNick = await User.findOne({ where: { nick } });
+        if (exUserNick) {
+            return res.redirect('/join?error=nick_exist');       //입력된 nick이 존재하면 원래페이지로... 이메일 중복이므로 회원가입불가능
+        }
+
         const hash = await bcrypt.hash(password, 12);       //암호화
         await User.create({         //DB에 User테이블생성
             email,
@@ -47,6 +55,26 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
             return res.redirect('/');
         });
     })(req, res, next);     //미들웨어내부에 미들웨어를 실행할때는 내부에서 (req, res, next)붙여주면됨
+});
+
+// 프로필 정보변경.. 일단 닉네임만 바꿀수있다는 전제로 (id나 pw는 다른방법으로 만들기 보안상문제로)
+router.post('/update', isLoggedIn, async (req, res, next) => {
+    const { nick } = req.body;     //front에서 전달한 정보 사용
+
+    const userOverlap = await User.findOne({ where: { nick } });  // 이름중복유저찾고
+
+    if (userOverlap) {
+        return res.redirect('/infoChange?error=nick_exist');       //입력된 nick이 존재하면 원래페이지로... 이메일 중복이므로 회원가입불가능
+    }
+
+    const exUser = await User.findOne({ where: { id: req.user.id } });  // 현재로그인한 유저찾고
+
+    // update(수정할내용, 조건)
+    exUser.update({
+        nick,
+    });
+
+    res.redirect('/');
 });
 
 // local 로그아웃

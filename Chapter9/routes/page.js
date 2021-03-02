@@ -22,6 +22,11 @@ router.get('/join', isNotLoggedIn, (req, res) => {
     res.render('join', { title: '회원가입 - NodeBird' });
 });
 
+// 정보변경페이지
+router.get('/infoChange', isLoggedIn, (req, res) => {
+    res.render('infoChange', { title: '정보변경 - NodeBird' });
+});
+
 router.get('/', async (req, res, next) => {
     try {
         const posts = await Post.findAll({

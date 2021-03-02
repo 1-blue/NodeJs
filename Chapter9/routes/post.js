@@ -32,7 +32,6 @@ const upload = multer({
 // 2. /post/img 호출은 어디서하는지
 // 이미지업로드
 router.post('/img', isLoggedIn, upload.single('img'), (req, res, next) => {
-    console.log(`req.file : ${req.file}`);
     res.json({ url: `/img/${req.file.filename}` });
 });
 
