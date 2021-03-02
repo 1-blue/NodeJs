@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const { isLoggedIn, isNotLoggedIn } = require('./login');
+const { isLoggedIn, isNotLoggedIn, nicknameOverlapCheck, emailOverlapCheck } = require('./login');
 const User = require('../models/user');
 
 const router = express.Router();
@@ -11,14 +11,14 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
     const { email, nick, password } = req.body;     //front에서 전달한 정보 사용
     try {
         // 이메일 중복 확인
-        const exUserEmail = await User.findOne({ where: { email } });
-        if (exUserEmail) {
+        let check = await emailOverlapCheck(email);
+        if (check) {
             return res.redirect('/join?error=email_exist');       //입력된 email이 존재하면 원래페이지로... 이메일 중복이므로 회원가입불가능
         }
 
         // 닉네임 중복 확인
-        const exUserNick = await User.findOne({ where: { nick } });
-        if (exUserNick) {
+        check = await nicknameOverlapCheck(nick);
+        if (check) {
             return res.redirect('/join?error=nick_exist');       //입력된 nick이 존재하면 원래페이지로... 이메일 중복이므로 회원가입불가능
         }
 
@@ -61,9 +61,9 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 router.post('/update', isLoggedIn, async (req, res, next) => {
     const { nick } = req.body;     //front에서 전달한 정보 사용
 
-    const userOverlap = await User.findOne({ where: { nick } });  // 이름중복유저찾고
+    const check = await nicknameOverlapCheck(nick);
 
-    if (userOverlap) {
+    if (check) {
         return res.redirect('/infoChange?error=nick_exist');       //입력된 nick이 존재하면 원래페이지로... 이메일 중복이므로 회원가입불가능
     }
 

@@ -24,8 +24,14 @@ module.exports = class Post extends Sequelize.Model {
         })
     }
 
-    static associate(db){
-        db.Post.belongsTo(db.User, { foreignKey : "UserId", targetKey: "id"});
-        db.Post.belongsToMany(db.Hashtag, { foreignKey : "HashtagId", through : "PostHashtag"})
+    static associate(db) {
+        // user-post 게시글업로드(1:N관계)
+        db.Post.belongsTo(db.User, { foreignKey: "UserId", targetKey: "id" });
+
+        // post-hashtag 해쉬태그(N:M관계)
+        db.Post.belongsToMany(db.Hashtag, { foreignKey: "HashtagId", through: "PostHashtag" });
+
+        // user-post 좋아요(N:M관계)
+        db.Post.belongsToMany(db.User, { foreignKey: "like_post_id", through: "Like", as: "Liking"  });
     }
 }

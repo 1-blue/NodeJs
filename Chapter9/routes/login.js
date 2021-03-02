@@ -16,3 +16,20 @@ exports.isNotLoggedIn = (req, res, next) => {
         req.redirect(`/?error=${message}`);
     }
 };
+
+// 닉네임중복체크 : 중복시 true반환
+exports.nicknameOverlapCheck = async (nick) => {
+    const exUserNick = await User.findOne({ where: { nick } });
+    if (exUserNick) {
+        return true;
+    }
+    return false;
+}
+
+exports.emailOverlapCheck = async (email) => {
+    const exUserEmail = await User.findOne({ where: { email } });
+    if (exUserEmail) {
+        return true;
+    }
+    return false;
+}

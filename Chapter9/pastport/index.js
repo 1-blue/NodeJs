@@ -29,7 +29,6 @@ module.exports = () => {
             }]
         })
             .then(user => {
-                console.log(JSON.stringify(user));
                 done(null, user)
             })
             .catch(err => done(err));

@@ -9,6 +9,12 @@ router.use((req, res, next) => {
     res.locals.followerCount = req.user ? req.user.Followers.length : 0;
     res.locals.followingCount = req.user ? req.user.Followings.length : 0;
     res.locals.followerIdList = req.user ? req.user.Followings.map(f => f.id) : [];
+
+    // 좋아요 눌린포스트정보보내기
+    // const user = await User.findOne({ where: { id: req.user.id } });
+
+    // res.locals.likeList = req.user ? user.getLiked().map(f => f.id) : [];
+
     next();
 });
 
@@ -37,10 +43,29 @@ router.get('/', async (req, res, next) => {
             order: [['created_at', "DESC"]],
         });
 
+        let like = null;
+
+        if (req.user) {
+            like = await User.findOne({
+                where: { id: req.user.id },
+                include: {
+                    model: Post,
+                    attributes: ['id'],
+                    as: "Liked"
+                }
+            });
+            like = like.Liked.map(f => f.id);
+        }
+
+        setTimeout(()=>{
+            console.log(`========= ${JSON.stringify(like)}`);
+        }, 2000)
+
         const twits = [];
         res.render('main', {
             title: 'NodeBird',
             twits: posts,
+            likeList: like,
         });
 
     } catch (error) {
@@ -58,11 +83,9 @@ router.get('/hashtag', isLoggedIn, async (req, res, next) => {
 
     try {
         const hashtag = await Hashtag.findOne({ where: { title: query } });
-        console.log(`hashtag====${JSON.stringify(hashtag)}`);
         let posts = [];
         if (hashtag) {
             posts = await hashtag.getPosts();
-            console.log(`posts====${JSON.stringify(posts)}`);
         }
 
         return res.render('main', {
