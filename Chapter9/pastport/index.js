@@ -15,7 +15,6 @@ module.exports = () => {
     // 값이 id값이므로 변수명 id하고 그 값을 이용해서 사용자에 대한 정보를 읽어서 콜백함수에 전달
     // 전달하면 req.user에 user값이 들어가서 사용하면됨
     passport.deserializeUser((id, done) => {
-        // findOne(조건, 찾을거);
         User.findOne({
             where: { id },
             include: [{

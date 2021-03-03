@@ -74,4 +74,25 @@ router.post('/', isLoggedIn, upload2.none(), async (req, res, next) => {
     }
 });
 
+// 게시글삭제
+router.post('/:id/delete', async (req, res, next) => {
+    //이미지 삭제... id로 post찾고 두번째 / 이후값이 파일명임
+    const post = await Post.findOne({
+        where: {id : req.params.id}
+    });
+
+    fs.unlink(`./uploads/${post.img.split('/')[2]}`, (error)=>{
+        if(error){
+            console.error('이미지 삭제 실패')
+        }
+    })
+    
+    Post.destroy({
+        where: {
+            id: req.params.id,
+        }
+    });
+    res.redirect('/');
+});
+
 module.exports = router;

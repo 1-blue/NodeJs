@@ -34,11 +34,21 @@
               <button class="twit-follow">팔로우하기</button>
             {% elseif twit.User.id !== user.id and user.id %}
               <button class="twit-unfollow">언팔로우하기</button>
+            {% elseif user.id %}
+            <button class="twit-delete">게시글삭제</button>
+            {% endif %}
+            {% if user.id %}
+            {% for like in postLike %}
+            {% if like.id === twit.id %}
+            <span class="twit-like-number"> {{ like.Liking.length }}</span>
+            {% endif %}
+            {% endfor %}
+            <span class="twit-like-number">😊</span>
             {% endif %}
             {% if user.id and twit.User.id !== user.id and not likeList.includes(twit.id) %}
-            <button class="twit-like"> 좋아요 </button>
+            <button class="twit-like"> 👍 </button>
             {% elseif user.id and twit.User.id !== user.id %}
-            <button class="twit-unlike"> 좋아요취소 </button>
+            <button class="twit-unlike"> 👎 </button>
             {% endif %}
             <div class="twit-content">{{twit.content}}</div>
             {% if twit.img %}
@@ -68,6 +78,28 @@
           });
       });
     }
+
+    // 게시글삭제
+    document.querySelectorAll('.twit-delete').forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        const myId = document.querySelector('#my-id');
+        if (myId) {
+          const userId = tag.parentNode.querySelector('.twit-user-id').value;
+          const twitId = tag.parentNode.querySelector('.twit-id').value;
+          if (userId === myId.value) {
+            if (confirm('게시글을 삭제하시겠습니까?')) {
+              axios.post(`/post/${twitId}/delete`)
+                .then(() => {
+                  location.reload();    // 페이지 새로고침
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
+            }
+          }
+        }
+      });
+    });
 
     //follow신청했을때 서버로 user.id넣어서 신호보내기
     document.querySelectorAll('.twit-follow').forEach(function(tag) {

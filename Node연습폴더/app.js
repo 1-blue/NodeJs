@@ -34,3 +34,18 @@
 //     console.log(`${app.get('port')}번 대기중`);
 // })
 
+// const fs = require('fs');
+
+// fs.unlink('./t.png', (err)=>{
+//     if(err){
+//         console.log('실패')
+//     }else{
+//         console.log(`성공`);
+//     }
+
+// })
+
+let path = "/img/화면 캡처21614589413492.jpg";
+
+console.log(path.split('/')[2]);
+console.log(path);

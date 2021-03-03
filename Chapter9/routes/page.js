@@ -9,12 +9,6 @@ router.use((req, res, next) => {
     res.locals.followerCount = req.user ? req.user.Followers.length : 0;
     res.locals.followingCount = req.user ? req.user.Followings.length : 0;
     res.locals.followerIdList = req.user ? req.user.Followings.map(f => f.id) : [];
-
-    // 좋아요 눌린포스트정보보내기
-    // const user = await User.findOne({ where: { id: req.user.id } });
-
-    // res.locals.likeList = req.user ? user.getLiked().map(f => f.id) : [];
-
     next();
 });
 
@@ -43,10 +37,13 @@ router.get('/', async (req, res, next) => {
             order: [['created_at', "DESC"]],
         });
 
-        let like = null;
+        //res.locals.followerIdList = req.user ? req.user.Followings.map(f => f.id) : [];
+
+        let userLike = null;    //유저가 좋아요누른 포스트 찾은 변수
+        let postLike = null;    //좋아요가 눌려진 포스트 찾는 변수
 
         if (req.user) {
-            like = await User.findOne({
+            userLike = await User.findOne({
                 where: { id: req.user.id },
                 include: {
                     model: Post,
@@ -54,18 +51,24 @@ router.get('/', async (req, res, next) => {
                     as: "Liked"
                 }
             });
-            like = like.Liked.map(f => f.id);
-        }
+            userLike = userLike.Liked.map(f => f.id);
 
-        setTimeout(()=>{
-            console.log(`========= ${JSON.stringify(like)}`);
-        }, 2000)
+            //전체포스트와 좋아요 누른 유저정보 추출
+            postLike = await Post.findAll({
+                include: {
+                    model: User,
+                    attributes: ['id'],
+                    as: "Liking"
+                }
+            });
+        }
 
         const twits = [];
         res.render('main', {
             title: 'NodeBird',
             twits: posts,
-            likeList: like,
+            likeList: userLike,
+            postLike,
         });
 
     } catch (error) {

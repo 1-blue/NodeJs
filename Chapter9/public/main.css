@@ -99,7 +99,7 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
   font-size: 12px;
   cursor: pointer;
 }
-.twit-like, .twit-unlike{
+.twit-like, .twit-unlike, .twit-like-number{
   float:right;
 }
 .twit-img { text-align: center; }
